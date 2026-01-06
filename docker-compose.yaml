@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+  
+  bookmark_service:
+    image: haihoanguci/bookmark_service:dev
+    restart: always
+    container_name: bookmark_service
+    depends_on:
+      - redis
+    env_file:
+      - ./bookmark_service/.env
+
+  portal:
+    image: ebvn/bookmark-app-portal:dev
+    restart: always
+    container_name: portal
+    depends_on:
+      - bookmark_service
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
