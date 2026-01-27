@@ -5,14 +5,30 @@ services:
     image: redis:alpine
     container_name: redis
   
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=bookmark_service
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  
   bookmark_service:
     image: haihoanguci/bookmark_service:dev
     restart: always
     container_name: bookmark_service
     depends_on:
       - redis
+      - postgres
     env_file:
       - ./bookmark_service/.env
+    volumes:
+      - ./public_key.pem:/app/public_key.pem
+      - ./private_key.pem:/app/private_key.pem
 
   portal:
     image: ebvn/bookmark-app-portal:dev
