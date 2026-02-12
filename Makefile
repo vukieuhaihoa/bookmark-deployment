@@ -20,6 +20,6 @@ full-deploy: generate-rsa-key deploy
 .PHONY: migrate-old-data
 migrate-old-data:
 	docker run --rm \
-  --network bookmark-management_default \
+  --network bookmark-deployment_default \
   --env-file ./bookmark_service/.env \
-  haihoanguci/bookmark_service_migrate:temporary
+  haihoanguci/bookmark_service_migration:dev
