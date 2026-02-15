@@ -8,8 +8,6 @@ services:
   postgres:
     image: postgres:17
     container_name: postgres
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
@@ -29,9 +27,8 @@ services:
     volumes:
       - ./public_key.pem:/app/public_key.pem
       - ./private_key.pem:/app/private_key.pem
-
   portal:
-    image: ebvn/bookmark-app-portal:dev
+    image: ebvn/bookmark-app-portal:mono
     restart: always
     container_name: portal
     depends_on:
